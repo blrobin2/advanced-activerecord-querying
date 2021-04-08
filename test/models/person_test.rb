@@ -94,4 +94,76 @@ class PersonTest < ActiveSupport::TestCase
       manager-at-location3
     ]
   end
+
+  test 'without_remote_manager' do
+    local = create(:location)
+    remote = create(:location)
+    local_manager = create(
+      :person,
+      location: local,
+      name: 'local_manager',
+      manager: nil
+    )
+    remote_manager = create(
+      :person,
+      location: remote,
+      name: 'remote_manager',
+      manager: nil
+    )
+    create(
+      :person,
+      location: local,
+      manager: local_manager,
+      name: 'has_local_manager'
+    )
+    create(
+      :person,
+      location: local,
+      manager: remote_manager,
+      name: 'has_remote_manager'
+    )
+
+    result = Person.without_remote_manager
+    assert result.map(&:name).sort == %w[has_local_manager local_manager remote_manager]
+  end
+
+  test 'with_local_coworkers' do
+    location = create(:location)
+    other_location = create(:location)
+    create(:person, location: location, name: 'with-coworkers-one')
+    create(:person, location: location, name: 'with-coworkers-two')
+    create(:person, location: location, name: 'with-coworkers-three')
+    create(:person, location: other_location, name: 'without-coworkers')
+
+    result = Person.with_local_coworkers
+    assert result.map(&:name).sort == %w[
+      with-coworkers-one
+      with-coworkers-three
+      with-coworkers-two
+    ]
+  end
+
+  test 'with_employees.with_local_coworkers.order_by_location_name' do
+    locations = [
+      create(:location, name: 'location1'),
+      create(:location, name: 'location3'),
+      create(:location, name: 'location2')
+    ]
+    managers = locations.map do |location|
+      create(:person, name: "coworker-#{location.name}", location: location)
+      create(:person, name: "manager-#{location.name}", location: location)
+    end
+    managers.each do |manager|
+      2.times do
+        create(:person, name: "employee-#{manager.name}", manager: manager)
+      end
+    end
+
+    result = Person.with_employees.with_local_coworkers.order_by_location_name
+    assert result.map(&:name) == %w[
+      manager-location1
+      manager-location2
+      manager-location3
+    ]
+  end
 end

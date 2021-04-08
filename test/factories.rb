@@ -13,7 +13,6 @@ FactoryBot.define do
     name
     role
     salary { 0 }
-    manager { nil }
   end
 
   factory :region do

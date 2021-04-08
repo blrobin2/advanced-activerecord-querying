@@ -7,5 +7,7 @@ class Person < ApplicationRecord
   scope :billable, -> { joins(:role).merge(Role.billable) }
   scope :in_region, ->(region) { joins(:location).merge(Location.in_region(region)) }
 
-  scope :alphabetically_by_region_and_location, -> { all }
+  scope :alphabetically_by_region_and_location, lambda {
+    joins(location: :region).order('regions.name ASC, locations.name ASC, people.name ASC')
+  }
 end

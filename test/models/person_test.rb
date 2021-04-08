@@ -42,4 +42,56 @@ class PersonTest < ActiveSupport::TestCase
       person1
     ]
   end
+
+  test 'order_by_location_name' do
+    locations = [
+      create(:location, name: 'location1'),
+      create(:location, name: 'location3'),
+      create(:location, name: 'location2')
+    ]
+    locations.each do |location|
+      create(:person, location: location, name: "at-#{location.name}")
+    end
+
+    result = Person.order_by_location_name
+    assert result.map(&:name) == %w[at-location1 at-location2 at-location3]
+  end
+
+  test 'with_employees' do
+    managers = [
+      create(:person, name: 'manager-one'),
+      create(:person, name: 'manager-two')
+    ]
+    managers.each do |manager|
+      2.times do
+        create(:person, name: "employee-of-#{manager.name}", manager: manager)
+      end
+    end
+
+    result = Person.with_employees
+    assert result.map(&:name).sort == %w[manager-one manager-two]
+  end
+
+  test 'with_employees_order_by_location_name' do
+    locations = [
+      create(:location, name: 'location1'),
+      create(:location, name: 'location3'),
+      create(:location, name: 'location2')
+    ]
+    managers = locations.map do |location|
+      create(:person, name: "manager-at-#{location.name}", location: location)
+    end
+    managers.each do |manager|
+      2.times do
+        create(:person, name: "employee-of-#{manager.name}", manager: manager)
+      end
+    end
+
+    result = Person.with_employees_order_by_location_name
+    assert result.map(&:name) == %w[
+      manager-at-location1
+      manager-at-location2
+      manager-at-location3
+    ]
+  end
 end

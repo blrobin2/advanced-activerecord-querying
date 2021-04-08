@@ -6,6 +6,8 @@
 #
 one:
   name: Employee
+  billable: true
 #
 two:
   name: Manager
+  billable: false

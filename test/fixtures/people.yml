@@ -1,15 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+employee_one:
+  name: Wendell
   role: one
-  location_id: 1
-  manager_id: 1
+  location: in_region_one
+  manager: manager_one
   salary: 1
 
-two:
-  name: MyString
-  role: two
-  location_id: 1
-  manager_id: 1
+employee_two:
+  name: Christie
+  role: one
+  location: in_region_one
+  manager: manager_one
   salary: 1
+
+manager_one:
+  name: Eve
+  role: two
+  location: other_region_one
+  salary: 2

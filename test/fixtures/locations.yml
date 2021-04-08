@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+expected_one:
+  name: in-expected-region-one
+  region: one
+
+expected_two:
+  name: in-expected-region-two
+  region: one
+
+other:
+  name: in-other-region
+  region: two

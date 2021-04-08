@@ -10,17 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_143645) do
+ActiveRecord::Schema.define(version: 2021_04_08_145503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "locations", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "region_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["region_id"], name: "index_locations_on_region_id"
+  end
+
   create_table "people", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.bigint "role_id", null: false
+    t.integer "location_id"
+    t.integer "manager_id"
+    t.integer "salary", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["role_id"], name: "index_people_on_role_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "roles", force: :cascade do |t|
@@ -30,5 +47,6 @@ ActiveRecord::Schema.define(version: 2021_04_08_143645) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "locations", "regions"
   add_foreign_key "people", "roles"
 end

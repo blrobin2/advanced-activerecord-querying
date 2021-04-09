@@ -166,4 +166,48 @@ class PersonTest < ActiveSupport::TestCase
       manager-location3
     ]
   end
+
+  def find_names(hash_by_id)
+    hash_by_id.inject({}) do |hash_by_name, (id, value)|
+      name = Location.find(id).name
+      hash_by_name.merge(name => value)
+    end
+  end
+
+  test 'maximum_salary_by_location' do
+    [50_000, 60_000].each do |highest_salary|
+      location = create(:location, name: "highest-#{highest_salary}")
+      create(:person, location: location, salary: highest_salary - 1)
+      create(:person, location: location, salary: highest_salary)
+    end
+
+    result = Person.maximum_salary_by_location
+
+    assert find_names(result) == {
+      'highest-50000' => 50_000,
+      'highest-60000' => 60_000
+    }
+  end
+
+  test 'managers_by_average_salary_difference' do
+    highest_difference = [45_000, 20_000]
+    medium_difference = [50_000, 10_000]
+    lowest_difference = [50_000, -5_000]
+    ordered_differences = [highest_difference, medium_difference, lowest_difference]
+
+    ordered_differences.each do |(salary, difference)|
+      manager = create(:person, salary: salary, name: "difference-#{difference}")
+      create(:person, manager: manager, salary: salary - difference * 1)
+      create(:person, manager: manager, salary: salary - difference * 2)
+      create(:person, manager: manager, salary: salary - difference * 3)
+    end
+
+    result = Person.managers_by_average_salary_difference
+
+    assert result.map(&:name) == %w[
+      difference-20000
+      difference-10000
+      difference--5000
+    ]
+  end
 end

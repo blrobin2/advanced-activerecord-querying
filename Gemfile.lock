@@ -76,7 +76,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    childprocess (4.1.0)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     erubi (1.11.0)
@@ -108,13 +107,15 @@ GEM
     minitest (5.16.3)
     msgpack (1.6.0)
     nio4r (2.5.8)
-    nokogiri (1.13.9-x86_64-darwin)
+    nokogiri (1.16.5-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.16.5-x86_64-linux)
       racc (~> 1.4)
     pg (1.4.4)
     public_suffix (5.0.0)
     puma (5.6.5)
       nio4r (~> 2.0)
-    racc (1.6.0)
+    racc (1.7.3)
     rack (2.2.4)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
@@ -153,7 +154,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.6.0)
-    rexml (3.2.5)
+    rexml (3.2.8)
+      strscan (>= 3.0.9)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -165,8 +167,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.5.0)
-      childprocess (>= 0.5, < 5.0)
+    selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -179,6 +180,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    strscan (3.1.0)
     thor (1.2.1)
     tilt (2.0.11)
     turbolinks (5.2.1)
@@ -191,16 +193,16 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webdrivers (5.2.0)
+    webdrivers (5.3.1)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
-      selenium-webdriver (~> 4.0)
+      selenium-webdriver (~> 4.0, < 4.11)
     webpacker (5.4.3)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    websocket (1.2.9)
+    websocket (1.2.10)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -210,6 +212,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-18
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.4.4)
@@ -223,14 +226,14 @@ DEPENDENCIES
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.3, >= 6.1.4.7)
-  rexml
+  rexml (>= 3.2.7)
   sass-rails (>= 6)
-  selenium-webdriver
+  selenium-webdriver (>= 4.6.0)
   spring
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)
-  webdrivers
+  webdrivers (>= 5.3.0)
   webpacker (~> 5.0)
 
 RUBY VERSION
